@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using RecipeApi.Areas.Identity.Data;
 
 namespace RecipeApi.Data;
 
-public class RecipeApiContext : IdentityDbContext<IdentityUser>
+public class RecipeApiContext : IdentityDbContext<ApplicationUser>
 {
     public RecipeApiContext(DbContextOptions<RecipeApiContext> options)
         : base(options)

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RecipeApi.Areas.Identity.Data;
 using RecipeApi.Data;
@@ -8,7 +9,9 @@ var connectionString = builder.Configuration.GetConnectionString("Default") ?? t
 builder.Services.AddDbContext<RecipeApiContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services
+    .AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<RecipeApiContext>();
 
 // Add services to the container.

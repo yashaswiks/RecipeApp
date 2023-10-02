@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeApi", "RecipeApi\Reci
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "RecipeAppDb", "RecipeAppDb\RecipeAppDb.sqlproj", "{F9A0D025-0811-4915-81A6-2BBBE5F11D86}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeApp.Common", "RecipeApp.Common\RecipeApp.Common.csproj", "{12CB9E49-ABEA-475C-928C-42717EC4C86D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{F9A0D025-0811-4915-81A6-2BBBE5F11D86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9A0D025-0811-4915-81A6-2BBBE5F11D86}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F9A0D025-0811-4915-81A6-2BBBE5F11D86}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{12CB9E49-ABEA-475C-928C-42717EC4C86D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12CB9E49-ABEA-475C-928C-42717EC4C86D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12CB9E49-ABEA-475C-928C-42717EC4C86D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12CB9E49-ABEA-475C-928C-42717EC4C86D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

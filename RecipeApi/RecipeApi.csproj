@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RecipeApp.Business\RecipeApp.Business.csproj" />
     <ProjectReference Include="..\RecipeApp.Common\RecipeApp.Common.csproj" />
   </ItemGroup>
 

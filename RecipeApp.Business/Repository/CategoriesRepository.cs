@@ -37,7 +37,7 @@ public class CategoriesRepository : ICategoriesRepository
         return newIdentity;
     }
 
-    public async Task<List<Categories>> GetAll()
+    public async Task<List<Categories>> GetAllAsync()
     {
         using IDbConnection _db = new SqlConnection(_databaseOptions.ConnectionString);
 
@@ -47,7 +47,7 @@ public class CategoriesRepository : ICategoriesRepository
         return result?.AsList();
     }
 
-    public async Task<Categories> GetById(int id)
+    public async Task<Categories> GetByIdAsync(int id)
     {
         using IDbConnection _db = new SqlConnection(_databaseOptions.ConnectionString);
 
@@ -59,7 +59,7 @@ public class CategoriesRepository : ICategoriesRepository
         return result;
     }
 
-    public async Task<Categories> GetRecordDetailsByName(string categoryName)
+    public async Task<Categories> GetRecordDetailsByNameAsync(string categoryName)
     {
         if (categoryName is null) return null;
 

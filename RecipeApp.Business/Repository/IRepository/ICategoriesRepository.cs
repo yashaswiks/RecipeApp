@@ -8,9 +8,9 @@ public interface ICategoriesRepository
 {
     Task<int?> CreateNewCategoryAsync(string newCategory);
 
-    Task<Categories> GetRecordDetailsByName(string categoryName);
+    Task<Categories> GetRecordDetailsByNameAsync(string categoryName);
 
-    Task<List<Categories>> GetAll();
+    Task<List<Categories>> GetAllAsync();
 
-    Task<Categories> GetById(int id);
+    Task<Categories> GetByIdAsync(int id);
 }

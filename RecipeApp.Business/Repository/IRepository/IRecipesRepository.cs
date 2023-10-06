@@ -5,12 +5,12 @@ namespace RecipeApp.Business.Repository.IRepository;
 
 public interface IRecipesRepository
 {
-    Task<int?> CreateNewRecipe(AddNewRecipeDto recipe);
+    Task<int?> CreateNewRecipeAsync(AddNewRecipeModel recipe);
 }
 
-public record AddNewRecipeDto(
+public record AddNewRecipeModel(
     string Title,
     string Instructions,
     List<string> Ingredients,
-    string Category,
+    int CategoryId,
     string OwnerId);

@@ -28,7 +28,7 @@ public class CategoriesController : ControllerBase
     {
         try
         {
-            var categoryList = await _categoriesRepository.GetAll();
+            var categoryList = await _categoriesRepository.GetAllAsync();
             if (categoryList is null) return NotFound();
             return Ok(categoryList);
         }
@@ -46,7 +46,7 @@ public class CategoriesController : ControllerBase
     {
         try
         {
-            var categoryDetails = await _categoriesRepository.GetById(id);
+            var categoryDetails = await _categoriesRepository.GetByIdAsync(id);
             if (categoryDetails is null) return NotFound();
             return Ok(categoryDetails);
         }

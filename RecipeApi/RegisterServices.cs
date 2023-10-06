@@ -64,5 +64,7 @@ public static class RegisterServices
     public static void AddBusinessServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+        builder.Services.AddScoped<IIngredientsRepository, IngredientsRepository>();
+        builder.Services.AddScoped<IRecipesRepository, RecipesRepository>();
     }
 }

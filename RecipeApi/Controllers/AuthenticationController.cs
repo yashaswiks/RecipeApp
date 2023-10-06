@@ -78,6 +78,8 @@ public class AuthenticationController : ControllerBase
         var user = await _userManager.FindByNameAsync(data.UserName);
         if (user is null) return BadRequest();
 
+        var roles = await _userManager.GetRolesAsync(user);
+
         var passwordHasher = new PasswordHasher<ApplicationUser>();
         var passwordVerificationResult = passwordHasher
             .VerifyHashedPassword(user, user.PasswordHash, data.Password);
@@ -96,7 +98,7 @@ public class AuthenticationController : ControllerBase
         {
             case PasswordVerificationResult.Success:
 
-                token = GenerateToken(userData);
+                token = GenerateToken(userData, roles);
                 return Ok(token);
 
             case PasswordVerificationResult.Failed:
@@ -106,7 +108,7 @@ public class AuthenticationController : ControllerBase
                 string newPasswordHash = passwordHasher.HashPassword(user, data.Password);
                 user.PasswordHash = newPasswordHash;
                 await _userManager.UpdateAsync(user);
-                token = GenerateToken(userData);
+                token = GenerateToken(userData, roles);
                 return Ok(token);
 
             default:
@@ -129,7 +131,8 @@ public class AuthenticationController : ControllerBase
         }
     }
 
-    private string GenerateToken(UserData user)
+    private string GenerateToken(UserData user, 
+        IEnumerable<string> roles)
     {
         var secretKey = new SymmetricSecurityKey(
             Encoding.ASCII.GetBytes(_config.GetValue<string>("Authentication:SecretKey")));
@@ -143,6 +146,14 @@ public class AuthenticationController : ControllerBase
         claims.Add(new(JwtRegisteredClaimNames.GivenName, user.FirstName));
         claims.Add(new(JwtRegisteredClaimNames.FamilyName, user.LastName));
         claims.Add(new(JwtRegisteredClaimNames.Email, user.Email));
+
+        if(roles.Any())
+        {
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+        }
 
         var jwtExpiryInMinutes = _config.GetValue<int>("Authentication:JwtExpiryInMinutes");
 

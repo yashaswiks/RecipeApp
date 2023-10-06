@@ -3,13 +3,18 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.4" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RecipeApp.Common\RecipeApp.Common.csproj" />
+    <ProjectReference Include="..\RecipeApp.DapperDataAccess\RecipeApp.DapperDataAccess.csproj" />
   </ItemGroup>
 
 </Project>

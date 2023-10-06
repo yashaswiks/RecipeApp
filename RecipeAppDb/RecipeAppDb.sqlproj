@@ -76,4 +76,7 @@
   <ItemGroup>
     <None Include="Publishes\RecipeAppDb.publish.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="RecipeAppDb.refactorlog" />
+  </ItemGroup>
 </Project>

@@ -199,4 +199,48 @@ public class RecipesRepository : IRecipesRepository
 
         return output;
     }
+
+    public async Task<bool?> DeleteByIdAsync(int recipeId, string ownerId)
+    {
+        using IDbConnection _db = new SqlConnection(_databaseOptions.ConnectionString);
+
+        var deleteRecipeSql = @"DELETE FROM Recipes WHERE Id = @Id AND Owner = @Owner;";
+        var deleteIngredientsSql = @"DELETE FROM Ingredients WHERE RecipeId = @RecipeId;";
+
+        var deleteRecipeParams = new
+        {
+            Id = recipeId,
+            Owner = ownerId
+        };
+
+        var deleteIngredientsParams = new
+        {
+            RecipeId = recipeId
+        };
+
+        _db.Open();
+        using var trans = _db.BeginTransaction();
+
+        try
+        {
+            await _db.ExecuteAsync(deleteIngredientsSql, deleteIngredientsParams, trans);
+
+            int deleteRecipeResult = await _db.ExecuteAsync(deleteRecipeSql, deleteRecipeParams, trans);
+
+            if (deleteRecipeResult == 0)
+            {
+                trans.Rollback();
+                return false;
+            }
+
+            trans.Commit();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            trans.Rollback();
+            _logger.LogError(ex, "Error deleting recipe");
+            return false;
+        }
+    }
 }

@@ -25,10 +25,14 @@ public class IngredientsRepository : IIngredientsRepository
         _logger = logger;
     }
 
-    public Task<int?> DeleteIngredientsOfRecipeIdAsync(int recipeId,
-        string ownerId)
+    public async Task<int?> DeleteIngredientsOfRecipeIdAsync(int recipeId)
     {
-        throw new NotImplementedException();
+        using IDbConnection _db = new SqlConnection(_databaseOptions.ConnectionString);
+
+        var sql = @"DELETE FROM Ingredients
+                        WHERE RecipeId = @RecipeId;";
+
+        return await _db.ExecuteAsync(sql, new { RecipeId = recipeId });
     }
 
     public async Task<List<Ingredients>> GetByRecipeIdAsync(int recipeId)

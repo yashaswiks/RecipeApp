@@ -8,8 +8,7 @@ public interface IIngredientsRepository
 {
     Task<int?> InsertAsync(InsertIngredientsModel model);
 
-    Task<int?> DeleteIngredientsOfRecipeIdAsync(int recipeId,
-        string ownerId);
+    Task<int?> DeleteIngredientsOfRecipeIdAsync(int recipeId);
 
     Task<bool?> UpdateIngredients(
         int recipeId,

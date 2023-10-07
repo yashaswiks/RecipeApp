@@ -101,10 +101,11 @@ public class RecipesController : ControllerBase
     }
 
     // DELETE api/<RecipesController>/5
-    [HttpDelete("{id}")]
-    public void Delete(int id)
+    [HttpDelete("{recipeId}")]
+    public async Task<ActionResult<bool?>> Delete(int recipeId)
     {
-        throw new NotImplementedException();
+        var deleteResult = await _recipesRepository.DeleteByIdAsync(recipeId, GetUserId());
+        return Ok(deleteResult);
     }
 
     private string GetUserId()

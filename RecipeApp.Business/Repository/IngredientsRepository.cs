@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 using RecipeApp.Business.Repository.IRepository;
 using RecipeApp.Business.Services.IServices;
+using RecipeApp.DapperDataAccess;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,6 +29,20 @@ public class IngredientsRepository : IIngredientsRepository
         string ownerId)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<List<Ingredients>> GetByRecipeIdAsync(int recipeId)
+    {
+        using IDbConnection _db = new SqlConnection(_databaseOptions.ConnectionString);
+
+        var sql = @"SELECT Id, RecipeId, Ingredient
+                        FROM Ingredients
+                        WHERE RecipeId = @RecipeId;";
+
+        var details = await _db
+            .QueryAsync<Ingredients>(sql, new { RecipeId = recipeId });
+
+        return details?.AsList();
     }
 
     public async Task<int?> InsertAsync(InsertIngredientsModel model)

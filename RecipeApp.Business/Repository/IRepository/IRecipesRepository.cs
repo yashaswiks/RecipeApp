@@ -1,4 +1,4 @@
-﻿using RecipeApp.DapperDataAccess;
+﻿using RecipeApp.Business.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,11 +6,13 @@ namespace RecipeApp.Business.Repository.IRepository;
 
 public interface IRecipesRepository
 {
-    Task<Recipes> GetByIdAsync(int recipeId);
+    Task<RecipeDetailsModel> GetByIdAsync(int recipeId);
 
     Task<int?> CreateNewRecipeAsync(AddNewRecipeModel recipe);
 
     Task<bool?> UpdateRecipeAsync(UpdateExistingRecipeModel recipe);
+
+    Task<List<RecipeDetailsModel>> GetAll();
 }
 
 public record AddNewRecipeModel(

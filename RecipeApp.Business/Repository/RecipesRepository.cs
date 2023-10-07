@@ -1,10 +1,11 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
+using RecipeApp.Business.Models;
 using RecipeApp.Business.Repository.IRepository;
 using RecipeApp.Business.Services.IServices;
-using RecipeApp.DapperDataAccess;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -62,16 +63,28 @@ public class RecipesRepository : IRecipesRepository
         return newRecipeIdentity;
     }
 
-    public async Task<Recipes> GetByIdAsync(int recipeId)
+    public async Task<List<RecipeDetailsModel>> GetAll()
     {
-        var param = new { Id = recipeId };
+        // TODO: This is wrong, fix it
         using IDbConnection _db = new SqlConnection(_databaseOptions.ConnectionString);
 
-        var sql = @"SELECT * FROM Recipes WHERE Id = @Id; ";
+        var sql = @"SELECT
+                        r.Id, r.Title, r.Instructions, c.Category, CONCAT(u.FirstName, ' ', u.LastName) 'Owner', i.Ingredient
+                        FROM Recipes r
+                        LEFT JOIN Ingredients i ON r.Id = i.RecipeId
+                        LEFT JOIN Categories c ON r.CategoryId = c.Id
+                        LEFT JOIN AspNetUsers u ON r.Owner = u.Id;";
 
-        var recipe = await _db.QueryFirstOrDefaultAsync<Recipes>(sql, param);
+        var data = await _db
+            .QueryAsync<RecipeDetailsModel, string, RecipeDetailsModel>(sql,
+            (recipe, ingredient) =>
+            {
+                recipe.Ingredients.Add(ingredient);
+                return recipe;
+            },
+            splitOn: "Ingredient");
 
-        return recipe;
+        return data?.AsList();
     }
 
     public async Task<bool?> UpdateRecipeAsync(UpdateExistingRecipeModel recipe)
@@ -144,5 +157,46 @@ public class RecipesRepository : IRecipesRepository
             trans.Rollback();
             return false;
         }
+    }
+
+    public async Task<RecipeDetailsModel> GetByIdAsync(int recipeId)
+    {
+        using IDbConnection _db = new SqlConnection(_databaseOptions.ConnectionString);
+        var param = new { Id = recipeId };
+
+        var sql = @"SELECT
+                        r.Id, r.Title, r.Instructions, c.Category, CONCAT(u.FirstName, ' ', u.LastName) 'Owner'
+                        FROM Recipes r
+                        LEFT JOIN Categories c ON r.CategoryId = c.Id
+                        LEFT JOIN AspNetUsers u ON r.Owner = u.Id
+                        WHERE r.Id = @Id;";
+
+        var recipe = await _db
+            .QueryFirstOrDefaultAsync<RecipeModel>(sql, param);
+
+        var ingredients = new List<string>();
+
+        var ingredientsData = await _ingredientsRepository
+            .GetByRecipeIdAsync(recipeId);
+
+        if (ingredientsData?.Count > 0)
+        {
+            foreach (var ingredient in ingredientsData)
+            {
+                ingredients.Add(ingredient?.Ingredient);
+            }
+        }
+
+        var output = new RecipeDetailsModel
+        {
+            Id = recipe.Id,
+            Title = recipe.Title,
+            Instructions = recipe.Instructions,
+            Category = recipe.Category,
+            Owner = recipe.Owner,
+            Ingredients = ingredients
+        };
+
+        return output;
     }
 }

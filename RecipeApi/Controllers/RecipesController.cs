@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RecipeApp.Business.Models;
 using RecipeApp.Business.Repository.IRepository;
 using System.Security.Claims;
 
@@ -24,17 +25,25 @@ public class RecipesController : ControllerBase
     // GET: api/<RecipesController>
     [HttpGet]
     [AllowAnonymous]
-    public IEnumerable<string> Get()
+    public async Task<ActionResult<List<RecipeDetailsModel>>> Get()
     {
-        return new string[] { "value1", "value2" };
+        var data = await _recipesRepository.GetAll();
+
+        if (data is null) return NotFound();
+
+        return Ok(data);
     }
 
     // GET api/<RecipesController>/5
     [HttpGet("{id}")]
     [AllowAnonymous]
-    public string Get(int id)
+    public async Task<ActionResult<RecipeDetailsModel>> Get(int id)
     {
-        return "value";
+        var data = await _recipesRepository.GetByIdAsync(id);
+
+        if (data is null) return NotFound();
+
+        return Ok(data);
     }
 
     // POST api/<RecipesController>

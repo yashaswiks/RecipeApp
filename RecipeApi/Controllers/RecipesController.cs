@@ -25,7 +25,7 @@ public class RecipesController : ControllerBase
     // GET: api/<RecipesController>
     [HttpGet]
     [AllowAnonymous]
-    public async Task<ActionResult<List<RecipeDetailsModel>>> Get()
+    public async Task<ActionResult<List<RecipeModel>>> Get()
     {
         var data = await _recipesRepository.GetAll();
 

@@ -12,7 +12,7 @@ public interface IRecipesRepository
 
     Task<bool?> UpdateRecipeAsync(UpdateExistingRecipeModel recipe);
 
-    Task<List<RecipeDetailsModel>> GetAll();
+    Task<List<RecipeModel>> GetAll();
 
     Task<bool?> DeleteByIdAsync(int recipeId, string ownerId);
 }

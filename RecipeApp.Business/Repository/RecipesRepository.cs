@@ -63,26 +63,20 @@ public class RecipesRepository : IRecipesRepository
         return newRecipeIdentity;
     }
 
-    public async Task<List<RecipeDetailsModel>> GetAll()
+    public async Task<List<RecipeModel>> GetAll()
     {
         // TODO: This is wrong, fix it
         using IDbConnection _db = new SqlConnection(_databaseOptions.ConnectionString);
 
         var sql = @"SELECT
-                        r.Id, r.Title, r.Instructions, c.Category, CONCAT(u.FirstName, ' ', u.LastName) 'Owner', i.Ingredient
+                        r.Id, r.Title, r.Instructions, c.Category,
+                        CONCAT(u.FirstName, ' ', u.LastName) 'Owner'
                         FROM Recipes r
-                        LEFT JOIN Ingredients i ON r.Id = i.RecipeId
                         LEFT JOIN Categories c ON r.CategoryId = c.Id
                         LEFT JOIN AspNetUsers u ON r.Owner = u.Id;";
 
         var data = await _db
-            .QueryAsync<RecipeDetailsModel, string, RecipeDetailsModel>(sql,
-            (recipe, ingredient) =>
-            {
-                recipe.Ingredients.Add(ingredient);
-                return recipe;
-            },
-            splitOn: "Ingredient");
+            .QueryAsync<RecipeModel>(sql);
 
         return data?.AsList();
     }

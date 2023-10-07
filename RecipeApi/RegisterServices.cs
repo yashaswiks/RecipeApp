@@ -66,5 +66,6 @@ public static class RegisterServices
         builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
         builder.Services.AddScoped<IIngredientsRepository, IngredientsRepository>();
         builder.Services.AddScoped<IRecipesRepository, RecipesRepository>();
+        builder.Services.AddScoped<IUserRatingsRepository, UserRatingsRepository>();
     }
 }

@@ -66,15 +66,36 @@ public class RecipesController : ControllerBase
     }
 
     // PUT api/<RecipesController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    [HttpPut("{recipeId}")]
+    public async Task<IActionResult> Put(
+        int recipeId,
+        [FromBody] UpdateExistingRecipeDto updatedRecipeDetails)
     {
+        if (updatedRecipeDetails is null) return BadRequest();
+
+        var userId = GetUserId();
+        if (userId is null) return Unauthorized();
+
+        var updateRecipeModel = new UpdateExistingRecipeModel(
+            recipeId,
+            updatedRecipeDetails.NewRecipeTitle,
+            updatedRecipeDetails.NewRecipeInstructions,
+            updatedRecipeDetails.NewIngredients,
+            updatedRecipeDetails.NewCategoryId,
+            userId);
+        var isUpdateSuccesful = await _recipesRepository
+            .UpdateRecipeAsync(updateRecipeModel);
+
+        if (isUpdateSuccesful is null || !isUpdateSuccesful.Value) return BadRequest();
+
+        return Ok(isUpdateSuccesful);
     }
 
     // DELETE api/<RecipesController>/5
     [HttpDelete("{id}")]
     public void Delete(int id)
     {
+        throw new NotImplementedException();
     }
 
     private string GetUserId()
@@ -87,4 +108,10 @@ public class RecipesController : ControllerBase
         string Instructions,
         List<string> Ingredients,
         int CategoryId);
+
+    public record UpdateExistingRecipeDto(
+        string NewRecipeTitle,
+        string NewRecipeInstructions,
+        List<string> NewIngredients,
+        int NewCategoryId);
 }

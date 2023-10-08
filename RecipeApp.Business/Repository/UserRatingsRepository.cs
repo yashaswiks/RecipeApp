@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 using RecipeApp.Business.Repository.IRepository;
 using RecipeApp.Business.Services.IServices;
+using RecipeApp.DapperDataAccess;
 using System;
 using System.Data;
 using System.Threading.Tasks;
@@ -49,6 +50,36 @@ public class UserRatingsRepository : IUserRatingsRepository
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error Adding New Rating");
+            return null;
+        }
+    }
+
+    public async Task<UserRatings> GetRatingDetails(
+        int recipeId,
+        string ratingMadeBy)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(ratingMadeBy)) return null;
+
+            using IDbConnection _db = new SqlConnection(_databaseOptions.ConnectionString);
+
+            var sql = @"SELECT
+                            * FROM UserRatings r
+                            WHERE r.RecipeId = @RecipeId AND r.RatingMadeBy = @RatingMadeBy;";
+
+            var param = new
+            {
+                RecipeId = recipeId,
+                RatingMadeBy = ratingMadeBy
+            };
+
+            var result = await _db.QueryFirstOrDefaultAsync<UserRatings>(sql, param);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error Getting Rating Details");
             return null;
         }
     }

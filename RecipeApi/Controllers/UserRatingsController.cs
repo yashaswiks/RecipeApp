@@ -44,9 +44,31 @@ public class UserRatingsController : ControllerBase
     }
 
     // PUT api/recipes/{recipeId}/rate
-    [HttpPut("{recipeId}")]
-    public void Put(int recipeId, [FromBody] string value)
+    [HttpPut("{recipeId}/rate")]
+    public async Task<ActionResult<bool?>> Put(int recipeId, [FromBody] int updatedRating)
     {
+        try
+        {
+            var userId = GetUserId();
+            var ratingDetails = await _userRatingsRepository
+                .GetRatingDetails(recipeId, userId);
+
+            if (ratingDetails is null) return BadRequest();
+
+            var updateRating = new UpdateUserRatingModel(
+                ratingDetails.Id, recipeId, userId, updatedRating);
+
+            var rowsAffected = await _userRatingsRepository.UpdateRating(updateRating);
+
+            if (rowsAffected is null || rowsAffected == 0) return Ok(false);
+
+            return Ok(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Updating rating of Recipe failed");
+            return BadRequest();
+        }
     }
 
     private string GetUserId()

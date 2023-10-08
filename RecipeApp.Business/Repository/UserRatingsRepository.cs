@@ -23,7 +23,7 @@ public class UserRatingsRepository : IUserRatingsRepository
         _databaseOptions = databaseOptions;
     }
 
-    public async Task<int?> AddNewRating(AddNewUserRatingModel rating)
+    public async Task<int?> AddNewRatingAsync(AddNewUserRatingModel rating)
     {
         try
         {
@@ -54,7 +54,7 @@ public class UserRatingsRepository : IUserRatingsRepository
         }
     }
 
-    public async Task<UserRatings> GetRatingDetails(
+    public async Task<UserRatings> GetRatingDetailsAsync(
         int recipeId,
         string ratingMadeBy)
     {
@@ -84,7 +84,7 @@ public class UserRatingsRepository : IUserRatingsRepository
         }
     }
 
-    public async Task<int?> UpdateRating(UpdateUserRatingModel rating)
+    public async Task<int?> UpdateRatingAsync(UpdateUserRatingModel rating)
     {
         try
         {

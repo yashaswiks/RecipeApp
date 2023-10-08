@@ -63,7 +63,7 @@ public class RecipesRepository : IRecipesRepository
         return newRecipeIdentity;
     }
 
-    public async Task<List<RecipeModel>> GetAll()
+    public async Task<List<RecipeModel>> GetAllAsync()
     {
         // TODO: This is wrong, fix it
         using IDbConnection _db = new SqlConnection(_databaseOptions.ConnectionString);

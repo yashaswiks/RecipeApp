@@ -5,11 +5,11 @@ namespace RecipeApp.Business.Repository.IRepository;
 
 public interface IUserRatingsRepository
 {
-    Task<int?> AddNewRating(AddNewUserRatingModel rating);
+    Task<int?> AddNewRatingAsync(AddNewUserRatingModel rating);
 
-    Task<int?> UpdateRating(UpdateUserRatingModel rating);
+    Task<int?> UpdateRatingAsync(UpdateUserRatingModel rating);
 
-    Task<UserRatings> GetRatingDetails(int recipeId, string ratingMadeBy);
+    Task<UserRatings> GetRatingDetailsAsync(int recipeId, string ratingMadeBy);
 }
 
 public record AddNewUserRatingModel(

@@ -32,7 +32,7 @@ public class UserRatingsController : ControllerBase
                 GetUserId(),
                 rating);
 
-            var newRatingId = await _userRatingsRepository.AddNewRating(addNewRating);
+            var newRatingId = await _userRatingsRepository.AddNewRatingAsync(addNewRating);
             if (newRatingId is null) return BadRequest();
             return Ok(newRatingId);
         }
@@ -51,14 +51,14 @@ public class UserRatingsController : ControllerBase
         {
             var userId = GetUserId();
             var ratingDetails = await _userRatingsRepository
-                .GetRatingDetails(recipeId, userId);
+                .GetRatingDetailsAsync(recipeId, userId);
 
             if (ratingDetails is null) return BadRequest();
 
             var updateRating = new UpdateUserRatingModel(
                 ratingDetails.Id, recipeId, userId, updatedRating);
 
-            var rowsAffected = await _userRatingsRepository.UpdateRating(updateRating);
+            var rowsAffected = await _userRatingsRepository.UpdateRatingAsync(updateRating);
 
             if (rowsAffected is null || rowsAffected == 0) return Ok(false);
 

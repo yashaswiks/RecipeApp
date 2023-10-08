@@ -29,7 +29,7 @@ public class RecipesController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<List<RecipeModel>>> Get()
     {
-        var data = await _recipesRepository.GetAll();
+        var data = await _recipesRepository.GetAllAsync();
 
         if (data is null) return NotFound();
 

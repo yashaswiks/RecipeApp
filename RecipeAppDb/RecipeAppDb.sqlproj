@@ -73,6 +73,7 @@
     <Build Include="dbo\Tables\Ingredients.sql" />
     <Build Include="dbo\Tables\Categories.sql" />
     <Build Include="dbo\Tables\UserRatings.sql" />
+    <Build Include="dbo\Tables\UserFavourites.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publishes\RecipeAppDb.publish.xml" />

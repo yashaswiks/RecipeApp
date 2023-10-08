@@ -13,4 +13,6 @@ public interface ICategoriesRepository
     Task<List<Categories>> GetAllAsync();
 
     Task<Categories> GetByIdAsync(int id);
+
+    Task<int?> UpdateCategoryOfRecipeAsync(int recipeId, int categoryId);
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RecipeApp.Business.Models;
 using RecipeApp.Business.Repository.IRepository;
+using RecipeApp.Common;
 using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -14,12 +15,15 @@ public class RecipesController : ControllerBase
 {
     private readonly ILogger<RecipesController> _logger;
     private readonly IRecipesRepository _recipesRepository;
+    private readonly ICategoriesRepository _categoriesRepository;
 
     public RecipesController(ILogger<RecipesController> logger,
-        IRecipesRepository recipesRepository)
+        IRecipesRepository recipesRepository,
+        ICategoriesRepository categoriesRepository)
     {
         _logger = logger;
         _recipesRepository = recipesRepository;
+        _categoriesRepository = categoriesRepository;
     }
 
     // GET: api/<RecipesController>
@@ -72,6 +76,19 @@ public class RecipesController : ControllerBase
             _logger.LogError(ex, "The POST Call to api/Recipes failed");
             return BadRequest();
         }
+    }
+
+    // POST api/<RecipesController>/{recipeId}/category/{categoryId}
+    [HttpPost("{recipeId}/category/{categoryId}")]
+    [Authorize(Roles = UserRoles.Admin)]
+    public async Task<ActionResult<bool>> Post(int recipeId, int categoryId)
+    {
+        var updateCategoryResult = await _categoriesRepository
+            .UpdateCategoryOfRecipeAsync(recipeId, categoryId);
+
+        if (updateCategoryResult is null || updateCategoryResult == 0) return BadRequest();
+
+        return Ok(true);
     }
 
     // PUT api/<RecipesController>/5

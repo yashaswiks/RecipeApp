@@ -72,4 +72,23 @@ public class CategoriesRepository : ICategoriesRepository
         var result = await _db.QueryFirstOrDefaultAsync<Categories>(sql, param);
         return result;
     }
+
+    public async Task<int?> UpdateCategoryOfRecipeAsync(
+        int recipeId,
+        int categoryId)
+    {
+        using IDbConnection _db = new SqlConnection(_databaseOptions.ConnectionString);
+
+        var param = new
+        {
+            RecipeId = recipeId,
+            CategoryId = categoryId
+        };
+
+        var sql = @"UPDATE Recipes SET CategoryId = @CategoryId WHERE Id = @RecipeId;";
+
+        var rowsAffected = await _db.ExecuteAsync(sql, param);
+
+        return rowsAffected;
+    }
 }

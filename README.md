@@ -197,34 +197,3 @@ Certainly! Here are all the API endpoints for the Online Recipe Book API project
 These endpoints cover all the features mentioned in the project specification. Ensure to handle authentication, authorization, and validation of inputs appropriately for each endpoint.
 
 
-
-"Id"	"Category"
-"1"	"Appetizers"
-"2"	"Main Courses"
-"3"	"Desserts"
-"4"	"Salads"
-"5"	"Soups"
-
-New Recipe Entry JSON:
-{
-  "title": "Spaghetti Carbonara",
-  "instructions": "While the water is heating, beat the eggs in a bowl and mix in most of the grated cheese, reserving some for garnish.",
-  "ingredients": [
-    "12 ounces (340 grams) of spaghetti",
-    "2 large eggs"
-  ],
-  "categoryId": 1
-}
-
-Update Recipe Entry JSON
-{
-  "newRecipeTitle": "Indian Spaghetti Carbonara",
-  "newRecipeInstructions": "While the water is heating, beat the eggs in a bowl and mix in most of the grated cheese, reserving some for garnish and Turmeric to increase DHT.",
-  "newIngredients": [
-    "12 ounces (340 grams) of spaghetti",
-    "2 large eggs"
-  ],
-  "newCategoryId": 4
-}
-
-
